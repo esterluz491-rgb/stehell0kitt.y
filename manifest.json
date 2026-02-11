@@ -1,0 +1,20 @@
+{
+  "short_name": "HelloKitty",
+  "name": "Minha Coleção Hello Kitty",
+  "icons": [
+    {
+      "src": "https://i.pinimg.com/1200x/dc/04/cc/dc04cc74ecd5d90dde8234b6db8cea8a.jpg",
+      "sizes": "192x192",
+      "type": "image/png"
+    },
+    {
+      "src": "https://i.pinimg.com/1200x/dc/04/cc/dc04cc74ecd5d90dde8234b6db8cea8a.jpg",
+      "sizes": "512x512",
+      "type": "image/png"
+    }
+  ],
+  "start_url": "./index.html",
+  "display": "standalone",
+  "background_color": "#fff0f6",
+  "theme_color": "#ff4da6"
+}

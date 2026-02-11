@@ -1,0 +1,462 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+  <link
+  rel="stylesheet"
+  href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"
+/>
+  <link rel="manifest" href="manifest.json">
+<meta name="theme-color" content="#ff4da6">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Coleção Hello Kitty</title>
+
+<style>
+body {
+  font-family: Arial, sans-serif;
+  text-align: center;
+  position: relative;
+  margin: 0;
+}
+
+body::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  background-image: url("https://wallpapers.com/images/hd/hello-kitty-friends-cute-aesthetic-13u89nunc5xz3lhh.jpg");
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  opacity: 0.2;   /* 👈 AQUI controlas a opacidade */
+  z-index: -1;
+}
+
+
+h1 {
+  color: #ffffff;
+}
+
+#grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, 60px);
+  gap: 10px;
+  justify-content: center;
+  margin-top: 20px;
+}
+
+.card {
+  width: 60px;
+  height: 60px;
+  border: 2px solid #c13c7f47;
+  color: #731d48aa;
+  border-radius: 10px;
+  background: transparent;
+  cursor: pointer;
+  position: relative;
+  font-weight: bold;
+}
+
+.card.filled {
+  background: #e79cc3;
+  color:rgb(255, 255, 255);
+  border: none;
+}
+
+.heart {
+  position: absolute;
+  top: 2px;
+  right: 4px;
+  font-size: 10px;   /* aumenta ou diminui */
+  color: white;      /* muda para branco */
+}
+
+
+.modal {
+  display: none;
+  position: fixed;
+  inset: 0;
+  background: rgba(255, 182, 193, 0.3);
+  backdrop-filter: blur(5px);
+  justify-content: center;
+  align-items: center;
+}
+
+.modal-content {
+  background: rgba(255, 255, 255, 0.715);
+  color:#731d48aa;
+  padding: 25px;
+  border-radius: 25px;
+  width: 280px;
+  box-shadow: 0 15px 40px rgba(82, 7, 44, 0.3);
+  animation: popIn 0.3s ease;
+
+}
+
+button {
+  padding: 5px 10px;
+  margin-top: 10px;
+  color:#731d48aa;
+  background: none;
+}
+
+#progressContainer {
+  width: 80%;
+  height: 25px;
+  background: #ffe6f2;
+  margin: 20px auto;
+  border-radius: 20px;
+  position: relative;
+  overflow: hidden;
+}
+
+#progressBar {
+  height: 100%;
+  width: 0%;
+  background: #ff66b2;
+  border-radius: 20px;
+  position: relative;
+  transition: width 0.3s ease;
+}
+
+#kittyIcon {
+  position: absolute;
+  right: -15px;
+  top: -10px;
+  width: 40px;
+  transition: right 0.3s ease;
+}
+
+#filterBtn {
+  margin-bottom: 15px;
+  background: #ff99cc;
+  color:white;
+  border: none;
+  border-radius: 10px;
+  padding: 8px 12px;
+  cursor: pointer;
+}
+
+#missingBtn {
+  margin-left: 10px; /* separa do outro botão */
+  background: #ff99cc;
+  color: white;
+  border: none;
+  border-radius: 10px;
+  padding: 8px 12px;
+  cursor: pointer;
+}
+
+.modal-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.close-btn {
+  background: none;
+  border: none;
+  font-size: 22px;
+  cursor: pointer;
+  color: #ff99cc;
+  transition: 0.2s;
+}
+
+.close-btn:hover {
+  transform: scale(1.2);
+}
+
+.quantity-selector {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 15px;
+  margin: 20px 0;
+}
+
+.quantity-selector button {
+  background: #ff99cc;
+  border: none;
+  width: 35px;
+  height: 35px;
+  border-radius: 50%;
+  font-size: 18px;
+  cursor: pointer;
+  transition: 0.2s;
+  color: white;
+}
+
+.quantity-selector button:hover {
+  background: #731d48aa;
+  transform: scale(1.1);
+}
+
+#quantityDisplay {
+  font-size: 22px;
+  font-weight: bold;
+  color: #ff99cc;
+  width: 30px;
+  text-align: center;
+  color: #731d48aa;
+}
+
+.save-btn {
+  background: #ff99cc;
+  border: none;
+  padding: 8px 15px;
+  border-radius: 15px;
+  color: white;
+  font-weight: bold;
+  cursor: pointer;
+  transition: 0.2s;
+}
+
+.save-btn:hover {
+  background: #731d48aa;
+  transform: scale(1.05);
+}
+
+</style>
+</head>
+<body>
+
+<div id="progressContainer">
+  <div id="progressBar">
+    <img id="kittyIcon" src="https://www.pngall.com/wp-content/uploads/13/Kuromi-PNG-Photos.png">
+  </div>
+</div>
+
+<p id="progressText">0 / 209</p>
+
+<button id="filterBtn">Repetidas</button>
+<button id="missingBtn">Faltam</button>
+
+<div id="grid"></div>
+
+<div class="modal" id="modal">
+  <div class="modal-content">
+   <div class="modal-header">
+  <h3 id="cardTitle"></h3>
+  <button class="close-btn" onclick="closeModal()"><i class="fa-solid fa-xmark"></i></button>
+</div>
+
+<div class="quantity-selector">
+  <button onclick="decrease()">−</button>
+  <span id="quantityDisplay">0</span>
+  <button onclick="increase()">+</button>
+</div>
+
+<button class="save-btn" onclick="saveQuantity()">Guardar</button>
+  </div>
+</div>
+
+<script type="module">
+
+// 🔥 COLA AQUI A TUA CONFIG FIREBASE
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
+import { getFirestore, doc, setDoc, getDoc } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
+
+const quantityDisplay = document.getElementById("quantityDisplay");
+let currentQuantity = 0;
+
+const progressBar = document.getElementById("progressBar");
+const progressText = document.getElementById("progressText");
+const filterBtn = document.getElementById("filterBtn");
+
+let cardQuantities = {};
+let showOnlyDuplicates = false;
+let showOnlyMissing = false;
+
+const missingBtn = document.getElementById("missingBtn");
+
+missingBtn.onclick = function() {
+  showOnlyMissing = !showOnlyMissing;
+
+  for (let i = 1; i <= 209; i++) {
+    const btn = document.getElementById("card_" + i);
+    const quantity = cardQuantities[i] || 0;
+    const duplicates = quantity - 1;
+
+    if (showOnlyMissing) {
+      btn.style.display = quantity === 0 ? "block" : "none";
+      missingBtn.innerText = "Mostrar todas";
+    } else {
+      btn.style.display = "block";
+      missingBtn.innerText = "Mostrar só faltam";
+    }
+  }
+};
+
+
+
+const firebaseConfig = {
+  apiKey: "AIzaSyC29mFl1NLxUpwu-EQR09kwCThbj8BGViA",
+  authDomain: "hello-kitty-cartas.firebaseapp.com",
+  projectId: "hello-kitty-cartas",
+  storageBucket: "hello-kitty-cartas.firebasestorage.app",
+  messagingSenderId: "953410653355",
+  appId: "1:953410653355:web:849e15d4750fb923d83bee",
+  measurementId: "G-P1M5NR8LYJ"
+};
+
+const app = initializeApp(firebaseConfig);
+const db = getFirestore(app);
+
+const grid = document.getElementById("grid");
+const modal = document.getElementById("modal");
+const quantityInput = document.getElementById("quantityInput");
+const cardTitle = document.getElementById("cardTitle");
+
+let currentCard = null;
+
+// Criar 209 cartas
+for (let i = 1; i <= 209; i++) {
+  createCard(i);
+}
+
+function createCard(number) {
+  const btn = document.createElement("button");
+  btn.classList.add("card");
+  btn.innerText = number;
+  btn.id = "card_" + number;
+
+  btn.onclick = async () => {
+    currentCard = number;
+    cardTitle.innerText = "Carta " + number;
+    
+    const snap = await getDoc(doc(db, "cards", "card_" + number));
+    if (snap.exists()) {
+      currentQuantity = snap.data().quantity;
+quantityDisplay.innerText = currentQuantity;
+
+    } else {
+      currentQuantity = 0;
+      quantityDisplay.innerText = 0;
+    }
+
+    modal.style.display = "flex";
+  };
+
+  grid.appendChild(btn);
+}
+
+window.saveQuantity = async function() {
+  const quantity = currentQuantity;
+
+  await setDoc(doc(db, "cards", "card_" + currentCard), {
+    quantity: quantity
+  });
+
+  updateCardUI(currentCard, quantity);
+
+  modal.style.display = "none";
+}
+
+function updateCardUI(number, quantity) {
+  const btn = document.getElementById("card_" + number);
+  btn.classList.remove("filled");
+  btn.querySelectorAll(".heart").forEach(e => e.remove());
+
+  cardQuantities[number] = quantity;
+
+  if (quantity > 0) {
+    btn.classList.add("filled");
+  }
+
+  const duplicates = quantity - 1;
+
+  for (let i = 0; i < duplicates; i++) {
+    const heart = document.createElement("div");
+    heart.classList.add("heart");
+    heart.innerHTML = '<i class="fa-solid fa-heart"></i>';
+    heart.style.top = (2 + i*12) + "px";
+    btn.appendChild(heart);
+  }
+
+  if (showOnlyDuplicates) {
+    btn.style.display = duplicates > 0 ? "block" : "none";
+  }
+
+  updateProgress();
+}
+
+function updateProgress() {
+  let totalOwned = 0;
+
+  for (let i = 1; i <= 209; i++) {
+    if (cardQuantities[i] > 0) {
+      totalOwned++;
+    }
+  }
+
+  const percent = (totalOwned / 209) * 100;
+
+  progressBar.style.width = percent + "%";
+  progressText.innerText = totalOwned + " / 209";
+}
+
+filterBtn.onclick = function() {
+  showOnlyDuplicates = !showOnlyDuplicates;
+
+  for (let i = 1; i <= 209; i++) {
+    const btn = document.getElementById("card_" + i);
+    const quantity = cardQuantities[i] || 0;
+    const duplicates = quantity - 1;
+
+    if (showOnlyDuplicates) {
+      btn.style.display = duplicates > 0 ? "block" : "none";
+      filterBtn.innerText = "Mostrar todas";
+    } else {
+      btn.style.display = "block";
+      filterBtn.innerText = "Mostrar só repetidas";
+    }
+  }
+};
+
+import { getDocs, collection } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
+
+async function loadAllCards() {
+  const snapshot = await getDocs(collection(db, "cards"));
+
+  snapshot.forEach(docSnap => {
+    const number = parseInt(docSnap.id.replace("card_", ""));
+    const quantity = docSnap.data().quantity;
+    updateCardUI(number, quantity);
+  });
+}
+
+loadAllCards();
+
+window.increase = function() {
+  currentQuantity++;
+  quantityDisplay.innerText = currentQuantity;
+}
+
+window.decrease = function() {
+  if (currentQuantity > 0) {
+    currentQuantity--;
+    quantityDisplay.innerText = currentQuantity;
+  }
+}
+
+window.closeModal = function() {
+  modal.style.display = "none";
+}
+
+if ("serviceWorker" in navigator) {
+  window.addEventListener("load", () => {
+    navigator.serviceWorker.register("service-worker.js").then(
+      registration => {
+        console.log("Service Worker registrado com sucesso:", registration.scope);
+      },
+      err => {
+        console.log("Falha ao registrar Service Worker:", err);
+      }
+    );
+  });
+}
+
+
+</script>
+
+</body>
+</html>
