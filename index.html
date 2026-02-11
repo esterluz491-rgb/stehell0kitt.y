@@ -6,7 +6,7 @@
   href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"
 />
   <link rel="manifest" href="manifest.json">
-<meta name="theme-color" content="#ff4da6">
+<meta name="theme-color" content="#F5B6BF">
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Coleção Hello Kitty</title>
@@ -17,19 +17,9 @@ body {
   text-align: center;
   position: relative;
   margin: 0;
+  background-color: #96D2DD;
 }
 
-body::before {
-  content: "";
-  position: fixed;
-  inset: 0;
-  background-image: url("https://wallpapers.com/images/hd/hello-kitty-friends-cute-aesthetic-13u89nunc5xz3lhh.jpg");
-  background-size: cover;
-  background-position: center;
-  background-repeat: no-repeat;
-  opacity: 0.2;   /* 👈 AQUI controlas a opacidade */
-  z-index: -1;
-}
 
 
 h1 {
@@ -57,7 +47,7 @@ h1 {
 }
 
 .card.filled {
-  background: #e79cc3;
+  background: #F5B6BF;
   color:rgb(255, 255, 255);
   border: none;
 }
@@ -75,15 +65,15 @@ h1 {
   display: none;
   position: fixed;
   inset: 0;
-  background: rgba(255, 182, 193, 0.3);
+  background: rgba(245, 182, 192, 0.382);
   backdrop-filter: blur(5px);
   justify-content: center;
   align-items: center;
 }
 
 .modal-content {
-  background: rgba(255, 255, 255, 0.715);
-  color:#731d48aa;
+  background: rgba(255, 255, 255, 0.881);
+  color:#96D2DD;
   padding: 25px;
   border-radius: 25px;
   width: 280px;
@@ -102,7 +92,7 @@ button {
 #progressContainer {
   width: 80%;
   height: 25px;
-  background: #ffe6f2;
+  background: #F5B6BF;
   margin: 20px auto;
   border-radius: 20px;
   position: relative;
@@ -112,7 +102,7 @@ button {
 #progressBar {
   height: 100%;
   width: 0%;
-  background: #ff66b2;
+  background: #8F6EA3;
   border-radius: 20px;
   position: relative;
   transition: width 0.3s ease;
@@ -128,7 +118,7 @@ button {
 
 #filterBtn {
   margin-bottom: 15px;
-  background: #ff99cc;
+  background: #8F6EA3;
   color:white;
   border: none;
   border-radius: 10px;
@@ -138,7 +128,7 @@ button {
 
 #missingBtn {
   margin-left: 10px; /* separa do outro botão */
-  background: #ff99cc;
+  background: #8F6EA3;
   color: white;
   border: none;
   border-radius: 10px;
@@ -157,7 +147,7 @@ button {
   border: none;
   font-size: 22px;
   cursor: pointer;
-  color: #ff99cc;
+  color: #F5B6BF;
   transition: 0.2s;
 }
 
@@ -174,7 +164,7 @@ button {
 }
 
 .quantity-selector button {
-  background: #ff99cc;
+  background: #F5B6BF;
   border: none;
   width: 35px;
   height: 35px;
@@ -186,21 +176,20 @@ button {
 }
 
 .quantity-selector button:hover {
-  background: #731d48aa;
+  background: #96D2DD;
   transform: scale(1.1);
 }
 
 #quantityDisplay {
   font-size: 22px;
   font-weight: bold;
-  color: #ff99cc;
+  color:#96D2DD;
   width: 30px;
   text-align: center;
-  color: #731d48aa;
 }
 
 .save-btn {
-  background: #ff99cc;
+  background: #F5B6BF;
   border: none;
   padding: 8px 15px;
   border-radius: 15px;
@@ -211,13 +200,30 @@ button {
 }
 
 .save-btn:hover {
-  background: #731d48aa;
+  background: #F5B6BF;
   transform: scale(1.05);
 }
+.top-banner {
+  width: 100%;
+  height: 180px; /* pode ajustar */
+  overflow: hidden;
+}
+
+.top-banner img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
 
 </style>
 </head>
 <body>
+
+  <div class="top-banner">
+  <img src="https://starbrightlicensing.it/wp-content/uploads/2025/07/HKFriends-Cover-1-scaled.jpg" alt="Banner Hello Kitty">
+</div>
 
 <div id="progressContainer">
   <div id="progressBar">
@@ -441,6 +447,7 @@ window.decrease = function() {
 window.closeModal = function() {
   modal.style.display = "none";
 }
+
 
 if ("serviceWorker" in navigator) {
   window.addEventListener("load", () => {
